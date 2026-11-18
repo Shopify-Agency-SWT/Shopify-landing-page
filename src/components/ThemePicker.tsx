@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { site } from "@/content/site";
 
 // Colour themes for the site. Each one sets the site's colour tokens (see globals.css).
 type Theme = { id: string; name: string; navy: string; navy2: string; blue: string; mist: string; mist2: string; soft: string; accent: string; ink: string };
@@ -30,19 +31,27 @@ function apply(id: string) {
   s.setProperty("--color-ink", t.ink);
 }
 
+// The picker panel is a tool for choosing colours while building the site.
+// Visitors to the live site never see it; they get the theme set as `site.theme` in content/site.ts.
+const dev = process.env.NODE_ENV !== "production";
+
 export default function ThemePicker() {
-  const [active, setActive] = useState("navy");
-  const [open, setOpen] = useState(true);
+  const [active, setActive] = useState(site.theme);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    let saved = "navy";
-    try {
-      saved = localStorage.getItem(KEY) || "navy";
-    } catch {}
+    let saved = site.theme;
+    if (dev) {
+      try {
+        saved = localStorage.getItem(KEY) || site.theme;
+      } catch {}
+    }
     if (!themes.some((t) => t.id === saved)) saved = "navy";
     setActive(saved);
     apply(saved);
   }, []);
+
+  if (!dev) return null;
 
   function pick(id: string) {
     setActive(id);

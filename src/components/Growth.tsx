@@ -6,10 +6,9 @@ import { Reveal } from "./ui";
 
 const stepArt = ["seo", "cro", "chart", "ads"] as const;
 
-export default function Growth() {
+// You have a store. Now what?
+export function NowWhat() {
   return (
-    <>
-      {/* You have a store. Now what? */}
       <section className="bg-mist py-24">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
@@ -40,8 +39,12 @@ export default function Growth() {
           </div>
         </Container>
       </section>
+  );
+}
 
-      {/* AI */}
+// AI & automation band
+export function AiBand() {
+  return (
       <section id="ai" className="scroll-mt-28 py-24">
         <Container>
           <Reveal>
@@ -64,7 +67,7 @@ export default function Growth() {
                     </li>
                   ))}
                 </ul>
-                <Btn href="#contact" variant="white" className="mt-9">
+                <Btn href="/contact?service=ai" variant="white" className="mt-9">
                   Add AI to My Store
                 </Btn>
               </div>
@@ -84,6 +87,5 @@ export default function Growth() {
           </Reveal>
         </Container>
       </section>
-    </>
   );
 }

@@ -6,7 +6,8 @@ import { Reveal } from "./ui";
 
 const whyArt = ["team", "store", "chart"] as const;
 
-export default function About() {
+// Who we are. `more` adds a button to the full About page (used on the home page).
+export function AboutIntro({ more = false }: { more?: boolean }) {
   return (
     <section id="about" className="scroll-mt-28 bg-soft py-24">
       <Container>
@@ -45,14 +46,24 @@ export default function About() {
                 </div>
               ))}
             </div>
-            <Btn href="#contact" variant="dark" className="mt-9">
-              Know More About Us
-            </Btn>
+            {more && (
+              <Btn href="/about" variant="dark" className="mt-9">
+                Know More About Us
+              </Btn>
+            )}
           </Reveal>
         </div>
+      </Container>
+    </section>
+  );
+}
 
-        {/* Why we do what we do */}
-        <Reveal className="mt-24">
+// Why we do what we do
+export function Purpose() {
+  return (
+    <section id="purpose" className="scroll-mt-28 bg-mist py-24">
+      <Container>
+        <Reveal>
           <div className="text-center">
             <Label>Our Purpose</Label>
             <Title>Why we do what we do</Title>

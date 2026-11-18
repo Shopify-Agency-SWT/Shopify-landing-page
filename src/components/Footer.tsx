@@ -1,13 +1,14 @@
+import Link from "next/link";
 import { services, site } from "@/content/site";
 import { Container, Logo, Socials } from "./shared";
 
 const company = [
-  ["About us", "#about"],
-  ["Why choose us", "#different"],
-  ["Our work", "#work"],
-  ["Client reviews", "#reviews"],
-  ["Blog", "#blog"],
-  ["Contact", "#contact"],
+  ["About us", "/about"],
+  ["Why choose us", "/about#different"],
+  ["Our work", "/work"],
+  ["Blog", "/blog"],
+  ["FAQ", "/contact#faq"],
+  ["Contact", "/contact"],
 ];
 
 export default function Footer() {
@@ -25,8 +26,8 @@ export default function Footer() {
           <h4 className="text-[15px] font-extrabold text-white">Services</h4>
           <ul className="mt-4 space-y-2.5 text-[14.5px]">
             {services.slice(0, 5).map((s) => (
-              <li key={s.title}>
-                <a href="#services" className="hover:text-white">{s.title}</a>
+              <li key={s.slug}>
+                <Link href={`/services/${s.slug}`} className="hover:text-white">{s.title}</Link>
               </li>
             ))}
           </ul>
@@ -35,8 +36,8 @@ export default function Footer() {
           <h4 className="text-[15px] font-extrabold text-white">More services</h4>
           <ul className="mt-4 space-y-2.5 text-[14.5px]">
             {services.slice(5).map((s) => (
-              <li key={s.title}>
-                <a href="#services" className="hover:text-white">{s.title}</a>
+              <li key={s.slug}>
+                <Link href={`/services/${s.slug}`} className="hover:text-white">{s.title}</Link>
               </li>
             ))}
           </ul>
@@ -46,7 +47,7 @@ export default function Footer() {
           <ul className="mt-4 space-y-2.5 text-[14.5px]">
             {company.map(([l, h]) => (
               <li key={l}>
-                <a href={h} className="hover:text-white">{l}</a>
+                <Link href={h} className="hover:text-white">{l}</Link>
               </li>
             ))}
           </ul>
@@ -56,7 +57,7 @@ export default function Footer() {
         <Container className="flex flex-col justify-between gap-2 py-6 text-[13.5px] sm:flex-row">
           <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
           <p>
-            <a href={`mailto:${site.email}`} className="hover:text-white">{site.email}</a> · Privacy policy · Terms
+            <a href={`mailto:${site.email}`} className="hover:text-white">{site.email}</a>
           </p>
         </Container>
       </div>

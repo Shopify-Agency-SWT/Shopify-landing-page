@@ -1,5 +1,19 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { site, type IconKey } from "@/content/site";
+
+// Internal pages use Next's Link (instant navigation); mailto:, tel: and outside links use a plain <a>.
+export function A({ href, children, className, onClick }: { href: string; children: ReactNode; className?: string; onClick?: () => void }) {
+  return href.startsWith("/") ? (
+    <Link href={href} className={className} onClick={onClick}>
+      {children}
+    </Link>
+  ) : (
+    <a href={href} className={className} onClick={onClick}>
+      {children}
+    </a>
+  );
+}
 
 export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={`mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
@@ -26,18 +40,18 @@ export function Btn({ href, children, variant = "primary", className = "" }: { h
     white: "bg-white text-navy hover:bg-mist",
   }[variant];
   return (
-    <a href={href} className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-display text-[13.5px] font-bold uppercase tracking-[0.06em] transition ${v} ${className}`}>
+    <A href={href} className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-display text-[13.5px] font-bold uppercase tracking-[0.06em] transition ${v} ${className}`}>
       {children}
-    </a>
+    </A>
   );
 }
 
 export function TextLink({ href, children, light = false }: { href: string; children: ReactNode; light?: boolean }) {
   return (
-    <a href={href} className={`group inline-flex items-center gap-1.5 text-[15px] font-bold ${light ? "text-white" : "text-navy"}`}>
+    <A href={href} className={`group inline-flex items-center gap-1.5 text-[15px] font-bold ${light ? "text-white" : "text-navy"}`}>
       <span className="border-b-2 border-current/0 pb-0.5 transition group-hover:border-current">{children}</span>
       <span className="transition group-hover:translate-x-1">→</span>
-    </a>
+    </A>
   );
 }
 
@@ -47,13 +61,13 @@ export function Logo({ light = false }: { light?: boolean }) {
     .map((w) => w[0])
     .join("");
   return (
-    <a href="#top" className={`flex items-center gap-2.5 ${light ? "text-white" : "text-navy"}`}>
+    <Link href="/" className={`flex items-center gap-2.5 ${light ? "text-white" : "text-navy"}`}>
       <span className={`grid h-10 w-10 place-items-center rounded-full font-display text-[15px] font-extrabold ${light ? "bg-white text-navy" : "bg-navy text-white"}`}>{initials}</span>
       <span className="leading-tight">
         <span className="block font-display text-[17px] font-extrabold tracking-[-0.01em]">{site.name}</span>
         <span className={`block text-[11px] font-semibold ${light ? "text-white/60" : "text-ink-2"}`}>Shopify Experts</span>
       </span>
-    </a>
+    </Link>
   );
 }
 
@@ -109,10 +123,13 @@ const social = {
 };
 
 export function Socials() {
+  // Only show icons for profiles that have a real link in content/site.ts
+  const live = (Object.keys(social) as (keyof typeof social)[]).filter((k) => site.social[k] && site.social[k] !== "#");
+  if (!live.length) return null;
   return (
     <div className="flex items-center gap-2">
-      {(Object.keys(social) as (keyof typeof social)[]).map((k) => (
-        <a key={k} href={site.social[k]} aria-label={k} className="grid h-9 w-9 place-items-center rounded-lg border border-white/15 text-white/80 transition hover:border-white hover:text-white">
+      {live.map((k) => (
+        <a key={k} href={site.social[k]} target="_blank" rel="noopener" aria-label={k} className="grid h-9 w-9 place-items-center rounded-lg border border-white/15 text-white/80 transition hover:border-white hover:text-white">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
             {social[k]}
           </svg>

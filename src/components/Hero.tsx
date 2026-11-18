@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { hero } from "@/content/site";
 import Image from "next/image";
+import Link from "next/link";
 import { Container, Icon } from "./shared";
 
 const promiseIcons = ["talent", "clock", "price"] as const;
@@ -32,12 +33,12 @@ export default function Hero() {
             {hero.text}
           </motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.65 }} className="mt-9 flex flex-wrap gap-3">
-            <a href="#contact" className="rounded-full bg-accent px-7 py-3.5 font-display text-[13.5px] font-bold uppercase tracking-[0.06em] text-navy transition hover:bg-white">
+            <Link href="/contact" className="rounded-full bg-accent px-7 py-3.5 font-display text-[13.5px] font-bold uppercase tracking-[0.06em] text-navy transition hover:bg-white">
               Connect With Us
-            </a>
-            <a href="#services" className="rounded-full border-2 border-white/30 px-7 py-3 font-display text-[13.5px] font-bold uppercase tracking-[0.06em] text-white transition hover:border-white">
+            </Link>
+            <Link href="/services" className="rounded-full border-2 border-white/30 px-7 py-3 font-display text-[13.5px] font-bold uppercase tracking-[0.06em] text-white transition hover:border-white">
               Our Services
-            </a>
+            </Link>
           </motion.div>
         </div>
 

@@ -5,7 +5,8 @@ import { Container, Icon, Label, Title } from "./shared";
 
 const field = "w-full rounded-lg border border-line bg-white px-4 py-3.5 text-[15px] text-ink outline-none transition placeholder:text-ink-2/60 focus:border-blue focus:ring-4 focus:ring-blue/10";
 
-export default function Contact() {
+// `need` pre-selects a service in the form (set when a visitor arrives from a service page)
+export default function Contact({ need }: { need?: string }) {
   // Until a form service is connected, the form opens the visitor's email app
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -16,12 +17,13 @@ export default function Contact() {
 
   const info = [
     { icon: "mail" as const, label: "Email", value: site.email, href: `mailto:${site.email}` },
-    { icon: "phone" as const, label: "Phone / WhatsApp", value: site.phone || "Add number", href: site.phone ? `tel:${site.phone}` : "#contact" },
+    // The phone row only shows once a number is added in content/site.ts
+    ...(site.phone ? [{ icon: "phone" as const, label: "Phone / WhatsApp", value: site.phone, href: `tel:${site.phone}` }] : []),
     { icon: "clock" as const, label: "Reply time", value: "Within one working day", href: "" },
   ];
 
   return (
-    <section id="contact" className="scroll-mt-20 bg-mist py-24">
+    <section id="contact" className="scroll-mt-28 bg-mist py-24">
       <Container className="grid gap-12 lg:grid-cols-[1fr_1.25fr]">
         <div>
           <Label>Contact us</Label>
@@ -65,7 +67,7 @@ export default function Contact() {
           </div>
           <label className="grid gap-1.5 text-[13.5px] font-bold text-navy">
             What do you need?
-            <select name="need" className={field}>
+            <select name="need" defaultValue={need} className={field}>
               {services.map((s) => (
                 <option key={s.title}>{s.title}</option>
               ))}
