@@ -1,12 +1,21 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { services, site } from "@/content/site";
 import { Container, Icon, Label, Title } from "./shared";
 
 const field = "w-full rounded-lg border border-line bg-white px-4 py-3.5 text-[15px] text-ink outline-none transition placeholder:text-ink-2/60 focus:border-blue focus:ring-4 focus:ring-blue/10";
 
-// `need` pre-selects a service in the form (set when a visitor arrives from a service page)
-export default function Contact({ need }: { need?: string }) {
+// Pre-selects a service in the form when a visitor arrives from a service page (/contact?service=<slug>).
+// Read in the browser, because the site is published as static files.
+export default function Contact() {
+  const select = useRef<HTMLSelectElement>(null);
+  useEffect(() => {
+    const service = new URLSearchParams(window.location.search).get("service");
+    const need = service === "ai" ? "AI & automation" : services.find((s) => s.slug === service)?.title;
+    if (need && select.current) select.current.value = need;
+  }, []);
+
   // Until a form service is connected, the form opens the visitor's email app
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,7 +76,7 @@ export default function Contact({ need }: { need?: string }) {
           </div>
           <label className="grid gap-1.5 text-[13.5px] font-bold text-navy">
             What do you need?
-            <select name="need" defaultValue={need} className={field}>
+            <select ref={select} name="need" className={field}>
               {services.map((s) => (
                 <option key={s.title}>{s.title}</option>
               ))}
